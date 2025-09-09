@@ -1,7 +1,8 @@
-import streamlit as st 
+import streamlit as st  # pyright: ignore[reportMissingImports]
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 # Welcome message
 st.title("Welcome to the DHS Data Analysis dashboard and Insights portal")
 # Load the dataset
