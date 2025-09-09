@@ -1,5 +1,5 @@
-streamlit
-pandas
-matplotlib
-seaborn
-numpy
+streamlit as st
+pandas as pd
+matplotlib.pyplot as plt
+seaborn sn
+numpy np
