@@ -14,20 +14,20 @@ except Exception as e:
 
 # Add a sidebar for user input
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Background", "Summary Statistics", "Visualization"])
+page = st.sidebar.radio("Go to", ["Background", "Summary categorical","Summary numerical", "Visualization"])
 
 # Page Routing
 if page == 'Background':
     st.header("Rwanda Demographic and Health Analysis 2019-2020")
     st.write("Demographic and Health (DH) analysis involves the comprehensive study of a population's health, fertility, and related demographic factors through nationally representative surveys, ideally conducted every five years. Key areas of analysis include maternal and child health, nutrition, family planning, HIV/AIDS, and household conditions, providing essential data to inform and evaluate national and international health policies and development programs.")
 
-elif page == 'Summary Statistics':
-    st.header('Data Analysis')
+elif page == 'Summary categorical':
+    st.header('categorical data Analysis')
     st.write("Explore the dataset and gain insights into population Demographic and Health information.")
     # Categorical variable distribution
 
     # Identify categorical columns
-    categorical_cols = data.select_dtypes(include=['object', 'category']).columns.tolist()
+    categorical_cols = data.select_dtypes(include=['object','category']).columns.tolist()
 
     #if categorical_cols:
     selected_col = st.selectbox("Select a categorical column", categorical_cols)
@@ -51,6 +51,23 @@ elif page == 'Summary Statistics':
     # Display table
     st.dataframe(freq_table)
 
+    ## Display variables patterns
+    selected_column = st.selectbox("Select a feature you want the description for:", data.columns)
+    st.subheader(f"Description of '{selected_column}'")
+    st.write(data[selected_column].describe())
+    # Display correlation
+    st.subheader("Correlation Matrix:")
+    #st.write(data.corr())
+    corr = data.corr(numeric_only=True)
+    #st.write(data[corr].corr())
+    # Plot the heatmap
+    fig, ax = plt.subplots(figsize=(10, 8))
+    sns.heatmap(corr, annot=True, cmap='coolwarm', fmt=".2f", ax=ax)
+    plt.title("Correlation Matrix Heatmap")
+    st.pyplot(fig)
+elif page == 'Summary numerical':
+    st.header('numerical data Analysis')
+    st.write("Explore the dataset and gain insights into population Demographic and Health information.")
     # Display basic statistics
     st.subheader("Basic statistics for Age:")
     #st.dataframe(data.describe())
@@ -81,22 +98,6 @@ elif page == 'Summary Statistics':
     st.dataframe(data['age at circumcision'].describe())
     st.dataframe(data['age at circumcision'].shape)
 
-    
-
-    ## Display variables patterns
-    selected_column = st.selectbox("Select a feature you want the description for:", data.columns)
-    st.subheader(f"Description of '{selected_column}'")
-    st.write(data[selected_column].describe())
-    # Display correlation
-    st.subheader("Correlation Matrix:")
-    #st.write(data.corr())
-    corr = data.corr(numeric_only=True)
-    #st.write(data[corr].corr())
-    # Plot the heatmap
-    fig, ax = plt.subplots(figsize=(10, 8))
-    sns.heatmap(corr, annot=True, cmap='coolwarm', fmt=".2f", ax=ax)
-    plt.title("Correlation Matrix Heatmap")
-    st.pyplot(fig)
 elif page == 'Visualization':
     st.header('Visualization')
     st.write("Visualize the data to understand trends and patterns.")
