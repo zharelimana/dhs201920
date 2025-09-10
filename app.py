@@ -7,7 +7,7 @@ import numpy as np
 st.title("Welcome to the DHS Data Analysis dashboard and Insights portal")
 # Load the dataset
 try:
-    data = pd.read_csv('Data/dsh201929cln.csv')  # use forward slash (or right click the file and copy relative path and paste between '')
+    data = pd.read_csv('dsh201929cln.csv')  # use forward slash (or right click the file and copy relative path and paste between '')
 except Exception as e:
     st.error("Failed to load dataset. Please check the file path.")
     st.stop()
