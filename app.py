@@ -16,14 +16,14 @@ except Exception as e:
 
 # Add a sidebar for user input
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("SELECT ONE OPTION", ["Background", "Summary categorical","Summary numerical", "Visualization", "Null Hypothesis (H₀)"])
+page = st.sidebar.radio("SELECT ONE OPTION", ["Background", "Qualitative analysis","Quantitative analysis", "Visualization", "Statistical hypothesis"])
 # Page Routing
 if page == 'Background':
     st.markdown("<h2 style='color: blue;'>Rwanda Demographic and Health Analysis 2019-2020</h2>", unsafe_allow_html=True)
     st.markdown("<p style='color: green;'>Demographic and Health (DH) analysis involves the comprehensive study of a population's health, fertility, and related demographic factors through nationally representative surveys, ideally conducted every five years. Key areas of analysis include maternal and child health, nutrition, family planning, HIV/AIDS, and household conditions, providing essential data to inform and evaluate national and international health policies and development programs..</p>", unsafe_allow_html=True)
     st.write("<p style='color: orange;'>The main advantages of Demographic and Health Surveys (DHS) are their national scope, high data quality, and standardized methodology across countries, enabling robust analysis of population health, fertility, and mortality trends over time and for comparisons between regions and countries. Key benefits include providing data where it's lacking, supporting program evaluation, and generating indicators for national and global goals like the SDGs</p>", unsafe_allow_html=True)
     
-elif page == 'Summary categorical':
+elif page == 'Qualitative analysis':
     st.header('categorical data Analysis')
     st.write("Explore the dataset and gain insights into population Demographic and Health information.")
    
@@ -56,7 +56,7 @@ elif page == 'Summary categorical':
     st.dataframe(table.reset_index()) 
 
 
-elif page == 'Summary numerical':
+elif page == 'Quantitative analysis':
     st.header('numerical data Analysis')
     st.write("Explore the dataset and gain insights into population Demographic and Health information.")
 
@@ -114,7 +114,7 @@ elif page == 'Visualization':
     st.pyplot(fig)
 
 # Values variable groups dependances with ANNOVA
-elif page == 'Null Hypothesis (H₀)':
+elif page == 'Statistical hypothesis':
     st.header('One-way ANOVA Test')
     st.write("<p style='color: blue;'> Null Hypothesis is a statement in statistics asserting that there is no statistically significant differences between the means of multiple groups within Independent (Categorical) Variable with regard to the Dependent (Numeric) Variable</p>", unsafe_allow_html=True)
     
