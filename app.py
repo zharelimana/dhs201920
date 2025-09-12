@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 # Welcome message
-st.title("Welcome to the DHS Data Analysis dashboard and Insights portal")
+st.title("Demographic and Health Data Analysis dashboard")
+st.markdown("*<h2 style='color: blue;'>by Harelimana Zacharie</h2>*", unsafe_allow_html=True)
 # Load the dataset
 try:
     data = pd.read_csv('dsh201929cln.csv')  # use forward slash (or right click the file and copy relative path and paste between '')
