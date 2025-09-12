@@ -24,14 +24,14 @@ if page == 'Background':
     st.write("<p style='color: orange;'>The main advantages of Demographic and Health Surveys (DHS) are their national scope, high data quality, and standardized methodology across countries, enabling robust analysis of population health, fertility, and mortality trends over time and for comparisons between regions and countries. Key benefits include providing data where it's lacking, supporting program evaluation, and generating indicators for national and global goals like the SDGs</p>", unsafe_allow_html=True)
     
 elif page == 'Qualitative analysis':
-    st.header('categorical data Analysis')
+    st.header('Categorical data Analysis')
     st.write("Explore the dataset and gain insights into population Demographic and Health information.")
    
     # Identify categorical columns
     sdata=data[['sample domain', 'region', 'type of place of residence', 'sex of household head', 'occupation', 'educational level', 'literacy', 'has an account in a bank or other financial institution', 'use of internet', 'covered by health insurance', 'current contraceptive method', 'respondent circumcised', 'ever been tested for hiv', 'tuberculosis spread by:']]
     categorical_cols = sdata.select_dtypes(include=['object','category']).columns.tolist()
     #if categorical_cols:
-    selected_col = st.selectbox("Select a categorical column", categorical_cols)
+    selected_col = st.selectbox("***Select a categorical column***", categorical_cols)
 
     # Count the frequency of each category
     category_counts = sdata[selected_col].value_counts()
@@ -57,7 +57,7 @@ elif page == 'Qualitative analysis':
 
 
 elif page == 'Quantitative analysis':
-    st.header('numerical data Analysis')
+    st.header('Numerical data Analysis')
     st.write("Explore the dataset and gain insights into population Demographic and Health information.")
 
 
@@ -65,7 +65,7 @@ elif page == 'Quantitative analysis':
     numeric_columns = dsdata.select_dtypes(include=['float64', 'int64']).columns
 
     # Let user select a column
-    selected_column = st.selectbox("Select a variable for description", numeric_columns)
+    selected_column = st.selectbox("***Select a variable for description***", numeric_columns)
 
     # Plotting the selected column as a histogram
     st.subheader(f"Description for '{selected_column}'")
@@ -95,7 +95,7 @@ elif page == 'Visualization':
     numeric_columns = vsdata.select_dtypes(include=['float64', 'int64']).columns
 
     # Let user select a column
-    selected_column = st.selectbox("Select a numeric column to plot", numeric_columns)
+    selected_column = st.selectbox("***Select a numeric column to plot***", numeric_columns)
 
     # Plotting the selected column as a histogram
     st.subheader(f"Histogram of '{selected_column}'")
@@ -115,7 +115,7 @@ elif page == 'Visualization':
 
 # Values variable groups dependances with ANNOVA
 elif page == 'Statistical hypothesis':
-    st.header('One-way ANOVA Test')
+    st.header('Null Hypothesis')
     st.write("<p style='color: blue;'> Null Hypothesis is a statement in statistics asserting that there is no statistically significant differences between the means of multiple groups within Independent (Categorical) Variable with regard to the Dependent (Numeric) Variable</p>", unsafe_allow_html=True)
     
     # Variable selection
@@ -124,8 +124,8 @@ elif page == 'Statistical hypothesis':
 
     categorical_cols = dpdata.select_dtypes(include=['object','category']).columns.tolist()
 
-    dep_var = st.selectbox("Select Dependent (Numeric) Variable:", numeric_cols)
-    indep_var = st.selectbox("Select Independent (Categorical) Variable:", categorical_cols)
+    dep_var = st.selectbox("***Select Dependent (Numeric) Variable:***", numeric_cols)
+    indep_var = st.selectbox("***Select Independent (Categorical) Variable:***", categorical_cols)
 
     if dep_var and indep_var:
         groups = [group[dep_var].dropna().values for name, group in dpdata.groupby(indep_var)]
@@ -133,7 +133,7 @@ elif page == 'Statistical hypothesis':
         if len(groups) > 1:
             f_stat, p_val = stats.f_oneway(*groups)
 
-            st.subheader("ANOVA Results")
+            st.subheader("Results")
             st.write(f"**F-statistic:** {f_stat:.4f}")
             st.write(f"**p-value:** {p_val:.4f}")
 
