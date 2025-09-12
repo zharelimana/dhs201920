@@ -15,31 +15,27 @@ except Exception as e:
 
 # Add a sidebar for user input
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Background", "Summary categorical","Summary numerical", "Visualization", "Null Hypothesis (H₀)"])
-
+page = st.sidebar.radio("SELECT ONE OPTION", ["Background", "Summary categorical","Summary numerical", "Visualization", "Null Hypothesis (H₀)"])
 # Page Routing
 if page == 'Background':
     st.markdown("<h2 style='color: blue;'>Rwanda Demographic and Health Analysis 2019-2020</h2>", unsafe_allow_html=True)
     st.markdown("<p style='color: green;'>Demographic and Health (DH) analysis involves the comprehensive study of a population's health, fertility, and related demographic factors through nationally representative surveys, ideally conducted every five years. Key areas of analysis include maternal and child health, nutrition, family planning, HIV/AIDS, and household conditions, providing essential data to inform and evaluate national and international health policies and development programs..</p>", unsafe_allow_html=True)
-    #st.header("Rwanda Demographic and Health Analysis 2019-2020")
     st.write("<p style='color: orange;'>The main advantages of Demographic and Health Surveys (DHS) are their national scope, high data quality, and standardized methodology across countries, enabling robust analysis of population health, fertility, and mortality trends over time and for comparisons between regions and countries. Key benefits include providing data where it's lacking, supporting program evaluation, and generating indicators for national and global goals like the SDGs</p>", unsafe_allow_html=True)
     
 elif page == 'Summary categorical':
     st.header('categorical data Analysis')
     st.write("Explore the dataset and gain insights into population Demographic and Health information.")
-    # Categorical variable distribution
-
+   
     # Identify categorical columns
     sdata=data[['sample domain', 'region', 'type of place of residence', 'sex of household head', 'occupation', 'educational level', 'literacy', 'has an account in a bank or other financial institution', 'use of internet', 'covered by health insurance', 'current contraceptive method', 'respondent circumcised', 'ever been tested for hiv', 'tuberculosis spread by:']]
     categorical_cols = sdata.select_dtypes(include=['object','category']).columns.tolist()
     #if categorical_cols:
     selected_col = st.selectbox("Select a categorical column", categorical_cols)
 
-     #if selected_col:
     # Count the frequency of each category
     category_counts = sdata[selected_col].value_counts()
 
-            # Plot using seaborn
+    # Plot using seaborn
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.barplot(x=category_counts.index, y=category_counts.values, ax=ax)
     ax.set_title(f"Distribution of participants by '{selected_col}'")
@@ -54,10 +50,9 @@ elif page == 'Summary categorical':
 
     # Combine and format
     table = pd.DataFrame({'Frequency': freq, 'Percentage (%)': percent.round(2)})
-    #print(table.to_string())
-
+    
     # Display the table with tabulate
-    st.dataframe(table.reset_index()) #, headers=['SN','Category', 'Frequency', 'Percentage (%)'], tablefmt='grid')
+    st.dataframe(table.reset_index()) 
 
 
 elif page == 'Summary numerical':
@@ -109,8 +104,6 @@ elif page == 'Visualization':
     ax.set_xlabel(selected_column)
     ax.set_ylabel("Frequency")
     st.pyplot(fig)
-    #st.write(data[selected_column].describe())
-    #st.write(f"Summary Statistics of {data[selected_column].describe()}'")
     st.write(f"Summary Statistics for {selected_column} Variable: {vsdata[selected_column].describe()}'")
     # Draw boxplot
     st.subheader(f"Boxplot of '{selected_column}'")
@@ -118,7 +111,7 @@ elif page == 'Visualization':
     sns.boxplot(vsdata[selected_column], ax=ax)
     plt.title(f"'{selected_column}'Boxplot")
     st.pyplot(fig)
-## --->> 
+
 # Values variable groups dependances with ANNOVA
 elif page == 'Null Hypothesis (H₀)':
     st.header('One-way ANOVA Test')
@@ -138,19 +131,19 @@ elif page == 'Null Hypothesis (H₀)':
 
         if len(groups) > 1:
             f_stat, p_val = stats.f_oneway(*groups)
-            #stats.f_oneway(group1, group2, group3)
 
             st.subheader("ANOVA Results")
             st.write(f"**F-statistic:** {f_stat:.4f}")
             st.write(f"**p-value:** {p_val:.4f}")
 
             if p_val < 0.05:
-                st.success("Reject Null Hypothesis since the P-Value is less than 0.05, meaning there is a statistically significant difference between at least two of the  Independent (Categorical) Variable's group means vis a vis of Select Dependent (Numeric) Variable.")
+                st.write("<p style='color: blue;'> Reject Null Hypothesis</p>", unsafe_allow_html=True)
+                st.success("Explanation: Since the P-Value is less than 0.05, meaning there is a statistically significant difference between at least two of the  Independent (Categorical) Variable's group means vis a vis of Select Dependent (Numeric) Variable.")
             else:
-                st.info("Fail to Reject Null Hypothesis since the P-Value is greater than the common significance level (α = 0.05), meaning there is No significant difference between groups, There is no statistically significant difference between the Independent (Categorical) Variable's group means vis a vis of Select Dependent (Numeric) Variable.")
+                st.write("<p style='color: blue;'> Fail to Reject Null Hypothesis </p>", unsafe_allow_html=True)
+                st.info("Explanation: Since the P-Value is greater than the common significance level (α = 0.05), meaning there is No significant difference between groups, There is no statistically significant difference between the Independent (Categorical) Variable's group means vis a vis of Select Dependent (Numeric) Variable.")
         else:
             st.warning("Independent variable must have at least 2 groups.")
-    ## --->> 
 else:
     st.write("Please select a valid page from the sidebar.")
 
