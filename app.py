@@ -1,3 +1,4 @@
+from scipy import stats
 import streamlit as st  # pyright: ignore[reportMissingImports]
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -14,7 +15,7 @@ except Exception as e:
 
 # Add a sidebar for user input
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Background", "Summary categorical","Summary numerical", "Visualization"])
+page = st.sidebar.radio("Go to", ["Background", "Summary categorical","Summary numerical", "Visualization", "Null Hypothesis (H₀)"])
 
 # Page Routing
 if page == 'Background':
@@ -34,7 +35,7 @@ elif page == 'Summary categorical':
     #if categorical_cols:
     selected_col = st.selectbox("Select a categorical column", categorical_cols)
 
-        #if selected_col:
+     #if selected_col:
     # Count the frequency of each category
     category_counts = sdata[selected_col].value_counts()
 
@@ -77,10 +78,6 @@ elif page == 'Summary numerical':
     st.dataframe(dsdata[selected_column].describe())
     
     # Display basic statistics one by one
-    ## st.subheader("Basic statistics for Age:")
-    ## st.dataframe(data.describe())
-    ##st.dataframe(data['current age'].describe())
-    ##st.dataframe(data['current age'].shape)
 
     st.subheader("Correlation Matrix among numerical variables:")
     
@@ -121,7 +118,39 @@ elif page == 'Visualization':
     sns.boxplot(vsdata[selected_column], ax=ax)
     plt.title(f"'{selected_column}'Boxplot")
     st.pyplot(fig)
+## --->> 
+# Values variable groups dependances with ANNOVA
+elif page == 'Null Hypothesis (H₀)':
+    st.header('One-way ANOVA Test')
+    st.write("<p style='color: blue;'> Null Hypothesis is a statement in statistics asserting that there is no statistically significant differences between the means of multiple groups within Independent (Categorical) Variable with regard to the Dependent (Numeric) Variable</p>", unsafe_allow_html=True)
+    
+    # Variable selection
+    dpdata=data[['current age', 'number of household members (total listed)', 'age of household head', 'total children ever born', 'number of living children', 'ideal number of children', 'age at circumcision', 'sample domain', 'region', 'type of place of residence', 'sex of household head', 'occupation', 'educational level', 'literacy', 'has an account in a bank or other financial institution', 'use of internet', 'covered by health insurance', 'current contraceptive method', 'respondent circumcised', 'ever been tested for hiv', 'tuberculosis spread by:']]
+    numeric_cols = dpdata.select_dtypes(include=['float64', 'int64']).columns
 
+    categorical_cols = dpdata.select_dtypes(include=['object','category']).columns.tolist()
+
+    dep_var = st.selectbox("Select Dependent (Numeric) Variable:", numeric_cols)
+    indep_var = st.selectbox("Select Independent (Categorical) Variable:", categorical_cols)
+
+    if dep_var and indep_var:
+        groups = [group[dep_var].dropna().values for name, group in dpdata.groupby(indep_var)]
+
+        if len(groups) > 1:
+            f_stat, p_val = stats.f_oneway(*groups)
+            #stats.f_oneway(group1, group2, group3)
+
+            st.subheader("ANOVA Results")
+            st.write(f"**F-statistic:** {f_stat:.4f}")
+            st.write(f"**p-value:** {p_val:.4f}")
+
+            if p_val < 0.05:
+                st.success("Reject Null Hypothesis since the P-Value is less than 0.05, meaning there is a statistically significant difference between at least two of the  Independent (Categorical) Variable's group means vis a vis of Select Dependent (Numeric) Variable.")
+            else:
+                st.info("Fail to Reject Null Hypothesis since the P-Value is greater than the common significance level (α = 0.05), meaning there is No significant difference between groups, There is no statistically significant difference between the Independent (Categorical) Variable's group means vis a vis of Select Dependent (Numeric) Variable.")
+        else:
+            st.warning("Independent variable must have at least 2 groups.")
+    ## --->> 
 else:
     st.write("Please select a valid page from the sidebar.")
 
